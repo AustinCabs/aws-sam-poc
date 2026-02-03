@@ -2,9 +2,10 @@ version = 0.1
 
 [default.deploy.parameters]
 stack_name = "aws-sam-poc"
+profile = "admin-acc"
 resolve_s3 = true
 s3_prefix = "aws-sam-poc"
-region = "us-east-1"
+region = "ap-southeast-1"
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = "Environment=dev"
 confirm_changeset = true
@@ -22,9 +23,10 @@ watch = true
 # Staging environment
 [staging.deploy.parameters]
 stack_name = "aws-sam-poc-staging"
+profile = "admin-acc-staging"
 resolve_s3 = true
 s3_prefix = "aws-sam-poc-staging"
-region = "us-east-1"
+region = "ap-southeast-1"
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = "Environment=staging"
 confirm_changeset = true
@@ -34,7 +36,7 @@ confirm_changeset = true
 stack_name = "aws-sam-poc-prod"
 resolve_s3 = true
 s3_prefix = "aws-sam-poc-prod"
-region = "us-east-1"
+region = "ap-southeast-1"
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = "Environment=prod"
 confirm_changeset = true
