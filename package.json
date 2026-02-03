@@ -1,0 +1,26 @@
+{
+  "name": "aws-sam-poc",
+  "version": "1.0.0",
+  "description": "AWS SAM TypeScript project with API Gateway, Lambda, and DynamoDB",
+  "private": true,
+  "scripts": {
+    "build": "scripts/build.sh",
+    "deploy": "sam deploy",
+    "start": "sam local start-api",
+    "validate": "sam validate",
+    "test": "jest",
+    "test:integration": "jest --config jest.integration.config.js"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.145",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.10.1",
+    "esbuild": "^0.24.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
