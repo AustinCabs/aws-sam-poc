@@ -48,6 +48,23 @@ Resources:
         - Key: Application
           Value: aws-sam-poc
 
+  AccountsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "Accounts-${Environment}"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: account_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: account_id
+          KeyType: HASH
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: aws-sam-poc
+
   # Lambda Layer - Shared code
   CommonLayer:
     Type: AWS::Serverless::LayerVersion
@@ -202,3 +219,8 @@ Outputs:
     Value: !Ref ItemsTable
     Export:
       Name: !Sub "${AWS::StackName}-ItemsTableName"
+  AccountsTableName:
+    Description: DynamoDb table name for accounts
+    Value: !Ref AccountsTable
+    Export:
+      Name: !Sub "${AWS::StackName}-AccountsTableName"
