@@ -65,6 +65,26 @@ Resources:
         - Key: Application
           Value: aws-sam-poc
 
+  FileUploadBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "aws-sam-poc-file-upload-${Environment}"
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: AutoDeleteAfter7Days
+            Status: Enabled
+            ExpirationInDays: 7
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: aws-sam-poc
+
   # Lambda Layer - Shared code
   CommonLayer:
     Type: AWS::Serverless::LayerVersion
@@ -198,6 +218,49 @@ Resources:
         Sourcemap: true
         EntryPoints:
           - src/handler.ts
+        External:
+          - "@aws-sdk/*"
+          - "common"
+          - "common/*"
+
+  # Lambda: File upload
+  FileUploadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "aws-sam-poc-file-upload-${Environment}"
+      CodeUri: functions/file-upload/
+      Handler: handler.handler
+      Description: File upload function poc to S3 bucket
+      Layers:
+        - !Ref CommonLayer
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref AccountsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AccountsTable
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - s3:PutObject
+                - s3:GetObject
+              Resource: !Sub "arn:aws:s3:::${FileUploadBucket}/*" # also can declare like  !Sub "${FileUploadBucket.Arn}/*"
+      Events:
+        FileUploadApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /file-upload
+            Method: POST
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - handler.ts
         External:
           - "@aws-sdk/*"
           - "common"
