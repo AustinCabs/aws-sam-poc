@@ -1,5 +1,6 @@
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { parseMultipart } from 'common';
 
 const s3Client = new S3Client({});
 const UPLOAD_BUCKET = process.env.UPLOAD_BUCKET;
@@ -16,49 +17,53 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     }
 
     try {
-        if (!event.body) {
+        // Parse multipart form-data
+        const { files, fields } = await parseMultipart(event);
+
+        if (files.length === 0) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({ message: 'No file provided' }),
             };
         }
 
-        const contentType = event.headers['content-type'] || event.headers['Content-Type'];
-        if (!contentType) {
-            return {
-                statusCode: 400,
-                body: JSON.stringify({ message: 'Missing Content-Type header' }),
-            };
-        }
+        const file = files[0]; // Get the first file
 
-        // Basic validation (extend as needed)
+        // Validate MIME type
         const allowedMimeTypes = ['image/jpeg', 'image/png', 'application/pdf', 'text/plain', 'text/csv'];
-        if (!allowedMimeTypes.includes(contentType)) {
+        if (!allowedMimeTypes.includes(file.contentType)) {
             return {
                 statusCode: 400,
-                body: JSON.stringify({ message: 'Invalid file type' }),
+                body: JSON.stringify({
+                    message: 'Invalid file type',
+                    allowedTypes: allowedMimeTypes
+                }),
             };
         }
 
-        // Check file size (approximate from base64 length)
+        // Validate file size (10MB max)
         const maxSizeBytes = 10 * 1024 * 1024; // 10MB
-        const approximateSize = (event.body.length * 3) / 4 - (event.body.indexOf('=') > 0 ? (event.body.length - event.body.indexOf('=')) : 0);
-
-        if (approximateSize > maxSizeBytes) {
+        if (file.content.length > maxSizeBytes) {
             return {
                 statusCode: 400,
-                body: JSON.stringify({ message: 'File too large' }),
+                body: JSON.stringify({
+                    message: 'File too large',
+                    maxSize: '10MB',
+                    receivedSize: `${(file.content.length / 1024 / 1024).toFixed(2)}MB`
+                }),
             };
         }
 
-        const fileContent = Buffer.from(event.body, 'base64');
-        const fileName = `uploads/${Date.now()}-${Math.random().toString(36).substring(7)}`;
+        // Generate a unique filename
+        const fileExtension = file.filename.split('.').pop();
+        const uniqueFilename = `uploads/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
 
+        // Upload to S3
         const command = new PutObjectCommand({
             Bucket: UPLOAD_BUCKET,
-            Key: fileName,
-            Body: fileContent,
-            ContentType: contentType,
+            Key: uniqueFilename,
+            Body: file.content,
+            ContentType: file.contentType,
         });
 
         await s3Client.send(command);
@@ -67,11 +72,26 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
             statusCode: 201,
             body: JSON.stringify({
                 message: 'File uploaded successfully',
+                filename: file.filename,
+                size: file.content.length,
+                contentType: file.contentType
             }),
         };
 
     } catch (error) {
         console.error('Error uploading file:', error);
+
+        // Handle multipart parsing errors
+        if (error instanceof Error && error.message.includes('multipart/form-data')) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({
+                    message: 'Invalid request format. Use multipart/form-data',
+                    error: error.message
+                }),
+            };
+        }
+
         return {
             statusCode: 500,
             body: JSON.stringify({ message: 'Failed to upload file' }),
