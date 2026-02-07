@@ -236,6 +236,7 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref AccountsTable
+          UPLOAD_BUCKET: !Ref FileUploadBucket
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref AccountsTable
