@@ -68,6 +68,8 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
                 console.log('total CSV items: ', parsedData.length);
                 console.log('Parsed CSV data (first 3 rows): ', JSON.stringify(parsedData.slice(0, 3), null, 2));
                 // You can process the parsed data here
+                // 1. check coulmns - validate if csv template is correct
+
             } catch (csvError) {
                 console.error('Error parsing CSV:', csvError);
                 // Decide whether to fail the upload or just log the error
@@ -75,14 +77,14 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
         }
 
         // Upload to S3
-        // const command = new PutObjectCommand({
-        //     Bucket: UPLOAD_BUCKET,
-        //     Key: uniqueFilename,
-        //     Body: file.content,
-        //     ContentType: file.contentType,
-        // });
+        const command = new PutObjectCommand({
+            Bucket: UPLOAD_BUCKET,
+            Key: uniqueFilename,
+            Body: file.content,
+            ContentType: file.contentType,
+        });
 
-        // await s3Client.send(command);
+        await s3Client.send(command);
 
         return {
             statusCode: 201,
