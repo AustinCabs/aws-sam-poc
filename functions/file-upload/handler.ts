@@ -66,7 +66,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
                 console.log('Parsing CSV file...');
                 const parsedData = await parseCsv(file.content);
                 console.log('total CSV items: ', parsedData.length);
-                console.log('Parsed CSV data: ', JSON.stringify(parsedData, null, 2));
+                console.log('Parsed CSV data (first 3 rows): ', JSON.stringify(parsedData.slice(0, 3), null, 2));
                 // You can process the parsed data here
             } catch (csvError) {
                 console.error('Error parsing CSV:', csvError);
