@@ -6,7 +6,7 @@ import { parse } from 'csv-parse';
  * @param input - The CSV data as a Buffer, string, or Readable stream.
  * @returns A promise that resolves to an array of parsed objects.
  */
-export const parseCsv = <T = any>(input: Buffer | string | NodeJS.ReadableStream): Promise<T[]> => {
+export const parseCsv = <T = unknown>(input: Buffer | string | NodeJS.ReadableStream): Promise<T[]> => {
     return new Promise((resolve, reject) => {
         const results: T[] = [];
 
