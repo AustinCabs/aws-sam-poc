@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { parseMultipart } from 'common';
+import { parseMultipart, parseCsv } from 'common';
 
 const s3Client = new S3Client({});
 const UPLOAD_BUCKET = process.env.UPLOAD_BUCKET;
@@ -54,19 +54,34 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
             };
         }
 
+        //  
+
         // Generate a unique filename
         const fileExtension = file.filename.split('.').pop();
         const uniqueFilename = `uploads/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
 
-        // Upload to S3
-        const command = new PutObjectCommand({
-            Bucket: UPLOAD_BUCKET,
-            Key: uniqueFilename,
-            Body: file.content,
-            ContentType: file.contentType,
-        });
+        // If it's a CSV file, parse it (demonstration)
+        if (file.contentType === 'text/csv' || fileExtension?.toLowerCase() === 'csv') {
+            try {
+                console.log('Parsing CSV file...');
+                const parsedData = await parseCsv(file.content);
+                console.log('Parsed CSV data (first 3 rows):', JSON.stringify(parsedData.slice(0, 3), null, 2));
+                // You can process the parsed data here
+            } catch (csvError) {
+                console.error('Error parsing CSV:', csvError);
+                // Decide whether to fail the upload or just log the error
+            }
+        }
 
-        await s3Client.send(command);
+        // Upload to S3
+        // const command = new PutObjectCommand({
+        //     Bucket: UPLOAD_BUCKET,
+        //     Key: uniqueFilename,
+        //     Body: file.content,
+        //     ContentType: file.contentType,
+        // });
+
+        // await s3Client.send(command);
 
         return {
             statusCode: 201,
