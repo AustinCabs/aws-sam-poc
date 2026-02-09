@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "scripts/build.sh",
-    "deploy": "sam deploy",
+    "deploy": "npm run build && sam deploy",
     "start": "sam local start-api",
     "validate": "sam validate",
     "test": "jest",
