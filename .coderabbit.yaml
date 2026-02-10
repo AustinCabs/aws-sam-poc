@@ -1,19 +1,24 @@
-# .coderabbit.yaml
-# Optimized for AWS SAM + Node.js + TypeScript (Lambda-based services)
-
 reviews:
   auto_review: true
-  review_level: thorough   # light | normal | thorough
-  request_changes: false   # keep advisory, not blocking
+  profile: assertive
+  request_changes_workflow: false
 
   path_filters:
     include:
       - "functions/**"
       - "layers/common/src/**"
       - "scripts/**"
-      - "test/**"
+      - "tests/**"
+      - "infrastructure/**"
+      - "types/**"
       - "template.yaml"
       - "template.yml"
+      - "package.json"
+      - "samconfig.toml"
+      - "tsconfig.json"
+      - "jest.config.js"
+      - "jest.integration.config.js"
+      - "README.md"
     exclude:
       - "node_modules/**"
       - ".aws-sam/**"
@@ -22,9 +27,6 @@ reviews:
       - "coverage/**"
       - "**/*.lock"
       - "**/*.min.*"
-
-language:
-  primary: typescript
 
 frameworks:
   - nodejs
@@ -35,7 +37,7 @@ project_context:
   runtime: nodejs
   typescript: true
   deployment: aws-sam
-  package_manager: npm   # change if yarn / pnpm
+  package_manager: npm
   infrastructure_as_code: sam
   cloud_provider: aws
 
