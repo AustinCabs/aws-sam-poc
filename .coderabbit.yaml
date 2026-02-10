@@ -1,7 +1,12 @@
 reviews:
-  auto_review: true
   profile: assertive
   request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  review_details: false
+  auto_review:
+    enabled: true
+    drafts: false
 
   path_filters:
     include:
@@ -27,6 +32,9 @@ reviews:
       - "coverage/**"
       - "**/*.lock"
       - "**/*.min.*"
+
+chat:
+  auto_reply: true
 
 frameworks:
   - nodejs
