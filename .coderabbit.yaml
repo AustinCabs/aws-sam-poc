@@ -1,0 +1,99 @@
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  review_details: false
+  auto_review:
+    enabled: true
+    drafts: false
+
+  path_filters:
+    include:
+      - "functions/**"
+      - "layers/common/src/**"
+      - "scripts/**"
+      - "tests/**"
+      - "infrastructure/**"
+      - "types/**"
+      - "template.yaml"
+      - "template.yml"
+      - "package.json"
+      - "samconfig.toml"
+      - "tsconfig.json"
+      - "jest.config.js"
+      - "jest.integration.config.js"
+      - "README.md"
+    exclude:
+      - "node_modules/**"
+      - ".aws-sam/**"
+      - "dist/**"
+      - "build/**"
+      - "coverage/**"
+      - "**/*.lock"
+      - "**/*.min.*"
+
+chat:
+  auto_reply: true
+
+frameworks:
+  - nodejs
+  - aws-lambda
+  - aws-sam
+
+project_context:
+  runtime: nodejs
+  typescript: true
+  deployment: aws-sam
+  package_manager: npm
+  infrastructure_as_code: sam
+  cloud_provider: aws
+
+focus_areas:
+  - correctness
+  - async-await
+  - error-handling
+  - security
+  - performance
+  - cost-awareness
+  - cloud-best-practices
+
+aws:
+  services:
+    - lambda
+    - api-gateway
+    - dynamodb
+    - s3
+
+lambda:
+  handler_style: api-gateway
+  best_practices:
+    - avoid_cold_start_overhead
+    - proper_error_mapping
+    - reuse_clients_across_invocations
+    - timeout_and_memory_awareness
+    - safe_env_var_usage
+
+sam:
+  review_template: true
+  focus:
+    - iam_policies
+    - least_privilege
+    - env_variables
+    - timeouts
+    - memory_size
+    - tracing
+    - logs
+
+typescript:
+  strictness:
+    no_implicit_any: true
+    strict_null_checks: true
+    avoid_any: true
+
+tone: constructive
+
+comment_preferences:
+  summarize_key_risks: true
+  avoid_style_nits: true
+  prefer_actionable_suggestions: true
