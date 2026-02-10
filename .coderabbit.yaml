@@ -1,0 +1,89 @@
+# .coderabbit.yaml
+# Optimized for AWS SAM + Node.js + TypeScript (Lambda-based services)
+
+reviews:
+  auto_review: true
+  review_level: thorough   # light | normal | thorough
+  request_changes: false   # keep advisory, not blocking
+
+  path_filters:
+    include:
+      - "functions/**"
+      - "layers/common/src/**"
+      - "scripts/**"
+      - "test/**"
+      - "template.yaml"
+      - "template.yml"
+    exclude:
+      - "node_modules/**"
+      - ".aws-sam/**"
+      - "dist/**"
+      - "build/**"
+      - "coverage/**"
+      - "**/*.lock"
+      - "**/*.min.*"
+
+language:
+  primary: typescript
+
+frameworks:
+  - nodejs
+  - aws-lambda
+  - aws-sam
+
+project_context:
+  runtime: nodejs
+  typescript: true
+  deployment: aws-sam
+  package_manager: npm   # change if yarn / pnpm
+  infrastructure_as_code: sam
+  cloud_provider: aws
+
+focus_areas:
+  - correctness
+  - async-await
+  - error-handling
+  - security
+  - performance
+  - cost-awareness
+  - cloud-best-practices
+
+aws:
+  services:
+    - lambda
+    - api-gateway
+    - dynamodb
+    - s3
+
+lambda:
+  handler_style: api-gateway
+  best_practices:
+    - avoid_cold_start_overhead
+    - proper_error_mapping
+    - reuse_clients_across_invocations
+    - timeout_and_memory_awareness
+    - safe_env_var_usage
+
+sam:
+  review_template: true
+  focus:
+    - iam_policies
+    - least_privilege
+    - env_variables
+    - timeouts
+    - memory_size
+    - tracing
+    - logs
+
+typescript:
+  strictness:
+    no_implicit_any: true
+    strict_null_checks: true
+    avoid_any: true
+
+tone: constructive
+
+comment_preferences:
+  summarize_key_risks: true
+  avoid_style_nits: true
+  prefer_actionable_suggestions: true
