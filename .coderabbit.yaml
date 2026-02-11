@@ -9,29 +9,30 @@ reviews:
     drafts: false
 
   path_filters:
-    include:
-      - "functions/**"
-      - "layers/common/src/**"
-      - "scripts/**"
-      - "tests/**"
-      - "infrastructure/**"
-      - "types/**"
-      - "template.yaml"
-      - "template.yml"
-      - "package.json"
-      - "samconfig.toml"
-      - "tsconfig.json"
-      - "jest.config.js"
-      - "jest.integration.config.js"
-      - "README.md"
-    exclude:
-      - "node_modules/**"
-      - ".aws-sam/**"
-      - "dist/**"
-      - "build/**"
-      - "coverage/**"
-      - "**/*.lock"
-      - "**/*.min.*"
+    # include:
+    - "functions/**"
+    - "layers/common/src/**"
+    - "scripts/**"
+    - "tests/**"
+    - "infrastructure/**"
+    - "types/**"
+    - "template.yaml"
+    - "template.yml"
+    - "package.json"
+    - "samconfig.toml"
+    - "tsconfig.json"
+    - "jest.config.js"
+    - "jest.integration.config.js"
+    - "README.md"
+    - ".github/workflows/**"
+    # exclude:
+    - "!node_modules/**"
+    - "!.aws-sam/**"
+    - "!dist/**"
+    - "!build/**"
+    - "!coverage/**"
+    - "!**/*.lock"
+    - "!**/*.min.*"
 
 chat:
   auto_reply: true
