@@ -1,0 +1,70 @@
+name: Deploy AWS SAM POC project
+
+on:
+  push:
+    branches:
+      # - dev
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ap-southeast-1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup SAM CLI
+        uses: aws-actions/setup-sam@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            layers/common/package-lock.json
+            functions/**/package.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate SAM template
+        run: npm run validate
+
+      - name: Build SAM
+        run: npm run build
+
+      # - name: Deploy to Dev
+      #   if: github.ref == 'refs/heads/dev'
+      #   run: |
+      #     sam deploy \
+      #       --stack-name my-app-dev \
+      #       --no-confirm-changeset \
+      #       --no-fail-on-empty-changeset \
+      #       --capabilities CAPABILITY_IAM \
+      #       --region $AWS_REGION
+
+      - name: Deploy to Dev for now
+        if: github.ref == 'refs/heads/main'
+        run: |
+          sam deploy \
+            --stack-name aws-sam-poc-dev \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --capabilities CAPABILITY_IAM \
+            --region $AWS_REGION
