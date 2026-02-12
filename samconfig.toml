@@ -2,7 +2,7 @@ version = 0.1
 
 [default.deploy.parameters]
 stack_name = "aws-sam-poc"
-#profile = "admin-acc"
+# profile = "admin-acc"
 resolve_s3 = true
 s3_prefix = "aws-sam-poc"
 region = "ap-southeast-1"
