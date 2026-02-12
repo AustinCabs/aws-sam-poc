@@ -2,7 +2,7 @@ version = 0.1
 
 [default.deploy.parameters]
 stack_name = "aws-sam-poc"
-profile = "admin-acc"
+# profile = "admin-acc"
 resolve_s3 = true
 s3_prefix = "aws-sam-poc"
 region = "ap-southeast-1"
@@ -23,7 +23,7 @@ watch = true
 # Staging environment
 [staging.deploy.parameters]
 stack_name = "aws-sam-poc-staging"
-profile = "admin-acc-staging"
+# profile = "admin-acc-staging"
 resolve_s3 = true
 s3_prefix = "aws-sam-poc-staging"
 region = "ap-southeast-1"
