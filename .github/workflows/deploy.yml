@@ -63,7 +63,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           sam deploy \
-            --stack-name aws-sam-poc-dev \
+            --stack-name aws-sam-poc \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
             --capabilities CAPABILITY_IAM \
