@@ -67,5 +67,4 @@ jobs:
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
             --capabilities CAPABILITY_IAM \
-            --region $AWS_REGION \
-            --profile ""
+            --region $AWS_REGION
