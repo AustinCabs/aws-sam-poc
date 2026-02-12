@@ -68,7 +68,7 @@ Resources:
   FileUploadBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "aws-sam-poc-file-upload-${Environment}"
+      BucketName: !Sub "aws-sam-poc-file-upload-${Environment}-${AWS::AccountId}"
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
