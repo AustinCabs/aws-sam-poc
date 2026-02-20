@@ -2,6 +2,7 @@ export * from "./utils/logger";
 export * from "./utils/response";
 export * from "./utils/validator";
 export * from "./utils/multipart";
+export * from "./utils/middleware";
 export * from "./models/item";
 export * from "./services/dynamodb";
 export * from "./utils/csv";
