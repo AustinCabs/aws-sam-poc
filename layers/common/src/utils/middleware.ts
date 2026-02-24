@@ -95,7 +95,7 @@ const jsonBodyParserMiddleware = (): middy.MiddlewareObj<
             "";
 
         // Only parse JSON content types (skip multipart, form-urlencoded, etc.)
-        if (contentType && !contentType.includes("application/json")) return;
+        if (!contentType.includes("application/json")) return;
 
         try {
             request.event.body = JSON.parse(body);
