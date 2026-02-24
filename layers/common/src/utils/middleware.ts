@@ -57,7 +57,7 @@ const httpErrorHandlerMiddleware = (): middy.MiddlewareObj<
 
         const isHttpError = err instanceof HttpError;
         const statusCode = isHttpError ? err.statusCode : 500;
-        const message = err.message || "Internal server error";
+        const message = isHttpError ? err.message : "Something went wrong.";
         const details = isHttpError ? err.details : undefined;
 
         logError(message, {
@@ -70,7 +70,7 @@ const httpErrorHandlerMiddleware = (): middy.MiddlewareObj<
             statusCode,
             body: JSON.stringify({
                 error: message,
-                ...(details !== undefined && details !== null ? { details } : {}),
+                // ...(details !== undefined && details !== null ? { details } : {}), // disable showing of details
             }),
         };
     },
