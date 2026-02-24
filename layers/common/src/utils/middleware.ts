@@ -154,8 +154,8 @@ const responseSerializerMiddleware = (): middy.MiddlewareObj<
 
 export const middify = (handler: LambdaHandler) => {
     return middy(handler)
-        .use(corsMiddleware())                // registered 1st → runs LAST  in after/onError
-        .use(responseSerializerMiddleware())   // registered 2nd → runs 3rd   in after
-        .use(httpErrorHandlerMiddleware())     // registered 3rd → runs 2nd   in onError
-        .use(jsonBodyParserMiddleware());      // registered 4th → runs 1st   in before
+        .use(corsMiddleware())
+        .use(responseSerializerMiddleware())
+        .use(httpErrorHandlerMiddleware())
+        .use(jsonBodyParserMiddleware());
 };
