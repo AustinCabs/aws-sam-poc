@@ -16,7 +16,7 @@ Globals:
   Function:
     Timeout: 30
     MemorySize: 128
-    Runtime: nodejs20.x
+    Runtime: nodejs22.x
     Architectures:
       - x86_64
     Environment:
@@ -93,7 +93,7 @@ Resources:
       Description: Shared utilities and services
       ContentUri: layers/common/
       CompatibleRuntimes:
-        - nodejs20.x
+        - nodejs22.x
       RetentionPolicy: Delete
 
   # API Gateway HTTP API
@@ -150,6 +150,7 @@ Resources:
           - "@aws-sdk/*"
           - "common"
           - "common/*"
+          - "@middy/core"
 
   # Lambda: Get single item
   GetItemFunction:
@@ -186,6 +187,7 @@ Resources:
           - "@aws-sdk/*"
           - "common"
           - "common/*"
+          - "@middy/core"
 
   # Lambda: Create item
   CreateItemFunction:
@@ -222,6 +224,7 @@ Resources:
           - "@aws-sdk/*"
           - "common"
           - "common/*"
+          - "@middy/core"
 
   # Lambda: File upload
   FileUploadFunction:
@@ -266,6 +269,7 @@ Resources:
           - "@aws-sdk/*"
           - "common"
           - "common/*"
+          - "@middy/core"
 
 Outputs:
   ApiUrl:
