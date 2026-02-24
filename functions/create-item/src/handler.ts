@@ -7,7 +7,7 @@ import { createItem } from "common/services/dynamodb";
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   const requestId = event.requestContext?.requestId;
   // info("Event", { event })
-  info("Create item requested", { requestId, ...event });
+  info("Create item requested", { requestId, event });
 
   const body = parseJson<Record<string, unknown>>(event.body);
   const validation = validateCreateItemBody(body);
