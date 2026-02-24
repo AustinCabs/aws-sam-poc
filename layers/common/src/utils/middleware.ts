@@ -63,6 +63,7 @@ const httpErrorHandlerMiddleware = (): middy.MiddlewareObj<
         logError(message, {
             requestId: request.event?.requestContext?.requestId,
             statusCode: String(statusCode),
+            ...{ originalError: err instanceof Error ? err.stack : String(err) },
             ...(details !== undefined && details !== null ? { details: String(details) } : {}),
         });
 
