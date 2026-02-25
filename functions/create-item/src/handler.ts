@@ -3,10 +3,10 @@ import { info } from "common/utils/logger";
 import { success, badRequest, errorResponse } from "common/utils/response";
 import { validateCreateItemBody, parseJson } from "common/utils/validator";
 import { createItem } from "common/services/dynamodb";
+import middify from "common/utils/middleware";
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const baseHandler: APIGatewayProxyHandlerV2 = async (event) => {
   const requestId = event.requestContext?.requestId;
-  // info("Event", { event })
   info("Create item requested", { requestId, event });
 
   const body = parseJson<Record<string, unknown>>(event.body);
@@ -29,3 +29,5 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     });
   }
 };
+
+export const handler = middify(baseHandler);

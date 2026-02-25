@@ -153,7 +153,7 @@ const responseSerializerMiddleware = (): middy.MiddlewareObj<
 //   after:   responseSerializer → cors          (reverse: cors last = headers always applied)
 //   onError: httpErrorHandler → cors            (reverse: error formatted first, then CORS added)
 
-export const middify = (handler: LambdaHandler) => {
+export default function middify(handler: LambdaHandler) {
     return middy(handler)
         .use(corsMiddleware())
         .use(responseSerializerMiddleware())
