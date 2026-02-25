@@ -52,3 +52,11 @@ declare module "common/services/dynamodb" {
   export function createItem(input: CreateItemInput): Promise<Item>;
   export function listItems(): Promise<Item[]>;
 }
+
+declare module "common/utils/middleware" {
+  import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
+  import type middy from "@middy/core";
+  export const middify: (handler: APIGatewayProxyHandlerV2) => middy.MiddyfiedHandler;
+  export default middify;
+}
+
