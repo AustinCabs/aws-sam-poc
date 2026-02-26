@@ -7,18 +7,14 @@ import middify from "common/utils/middleware";
 
 const baseHandler: APIGatewayProxyHandlerV2 = async (event) => {
   const requestId = event.requestContext?.requestId;
-  info("Create item requested", { requestId, event });
-
-  const body = parseJson<Record<string, unknown>>(event.body);
-  const validation = validateCreateItemBody(body);
-  if (!validation.valid) {
-    return badRequest(validation.error ?? "Invalid request");
-  }
+  info("Create item requested", { requestId, event, body: event.body });
+  // Cast through unknown since Middy parses the body at runtime
+  const body = event.body as unknown as CreateItemInput;
 
   try {
     const item = await createItem({
-      name: validation.name!,
-      description: validation.description,
+      name: body.name,
+      description: body.description,
     });
     info("Item created", { requestId, id: item.id });
     return success(item, 201);
