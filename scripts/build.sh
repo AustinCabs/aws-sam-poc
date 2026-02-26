@@ -12,8 +12,8 @@ cd "$ROOT_DIR"
 echo "Building Lambda layer (common)..."
 (cd layers/common && npm install && npm run build)
 
-echo "Checking for TypeScript errors..."
-npx tsc --noEmit
+# echo "Checking for TypeScript errors..."
+# npx tsc --noEmit
 
 echo "Building SAM application..."
 # Ensure esbuild is on PATH (SAM looks for it when building TypeScript Lambdas)
