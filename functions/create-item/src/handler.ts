@@ -4,12 +4,13 @@ import { success, badRequest, errorResponse } from "common/utils/response";
 import { validateCreateItemBody, parseJson } from "common/utils/validator";
 import { createItem } from "common/services/dynamodb";
 import middify from "common/utils/middleware";
+import { ICreateItemInput } from "./types";
 
 const baseHandler: APIGatewayProxyHandlerV2 = async (event) => {
   const requestId = event.requestContext?.requestId;
   info("Create item requested", { requestId, event, body: event.body });
   // Cast through unknown since Middy parses the body at runtime
-  const body = event.body as unknown as CreateItemInput;
+  const body = event.body as unknown as ICreateItemInput;
 
   try {
     const item = await createItem({
