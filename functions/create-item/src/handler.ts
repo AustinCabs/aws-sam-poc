@@ -1,6 +1,6 @@
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { info } from "common/utils/logger";
-import { success, badRequest, errorResponse } from "common/utils/response";
+import { success, badRequest, errorResponse, HttpError } from "common/utils/response";
 import { validateCreateItemBody, parseJson } from "common/utils/validator";
 import { createItem } from "common/services/dynamodb";
 import middify from "common/utils/middleware";
@@ -21,7 +21,7 @@ const baseHandler: APIGatewayProxyHandlerV2 = async (event) => {
     return success(item, 201);
   } catch (err) {
     info("Create item failed", { requestId, error: String(err) });
-    return errorResponse("Failed to create item", 500, {
+    throw new HttpError("Bad Request", 400, {
       message: err instanceof Error ? err.message : String(err),
     });
   }

@@ -18,6 +18,9 @@ declare module "common/utils/response" {
   export function errorResponse(message: string, statusCode?: number, details?: unknown): ApiResponse;
   export function notFound(message?: string): ApiResponse;
   export function badRequest(message: string, details?: unknown): ApiResponse;
+  export class HttpError extends Error {
+    constructor(message: string, statusCode: number, details?: unknown);
+  }
 }
 
 declare module "common/utils/validator" {
