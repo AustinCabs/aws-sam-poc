@@ -283,10 +283,10 @@ Resources:
         - !Ref CommonLayer
       Environment:
         Variables:
-          UPLOAD_BUCKET: !Ref FileUploadBucket
+          UPLOAD_BUCKET: !Sub "aws-sam-poc-file-upload-${Environment}-${AWS::AccountId}"
       Policies:
         - S3ReadPolicy:
-            BucketName: !Ref FileUploadBucket
+            BucketName: !Sub "aws-sam-poc-file-upload-${Environment}-${AWS::AccountId}"
       Events:
         FileUploadEvent:
           Type: S3
